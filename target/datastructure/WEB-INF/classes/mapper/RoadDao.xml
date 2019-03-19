@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.xiaoyuu.datastructure.dao.RoadDao">
+
+    <select id="getAll" resultType="Road">
+        select a.attraction_first_id,
+               a.attraction_second_id,
+               a.distance,
+               b.id           "attractionFirst.id",
+               b.name         "attractionFirst.name",
+               b.introduction "attractionFirst.introduction",
+               c.id           "attractionSecond.id",
+               c.name         "attractionSecond.name",
+               c.introduction "attractionSecond.introduction"
+
+        from road a
+                 inner join attraction b on a.attraction_first_id = b.id
+                 inner join attraction c on a.attraction_second_id = c.id;
+    </select>
+
+    <insert id="insertRoad" parameterType="Road">
+        insert ignore into road(attraction_first_id, attraction_second_id, distance)
+        values (#{road.attractionFirstId}, #{road.attractionSecondId}, #{road.distance})
+    </insert>
+
+    <select id="getRoadsByAttractionId" resultType="Road">
+        select a.attraction_first_id,
+               a.attraction_second_id,
+               a.distance,
+               b.id           "attractionFirst.id",
+               b.name         "attractionFirst.name",
+               b.introduction "attractionFirst.introduction",
+               c.id           "attractionSecond.id",
+               c.name         "attractionSecond.name",
+               c.introduction "attractionSecond.introduction"
+        from road a
+                 inner join attraction b on a.attraction_first_id = b.id
+                 inner join attraction c on a.attraction_second_id = c.id
+        where attraction_first_id = #{id}
+           or attraction_second_id = #{id}
+    </select>
+    <select id="getRoadByAttractionId" resultType="Road">
+        select a.attraction_first_id,
+               a.attraction_second_id,
+               a.distance,
+               b.id           "attractionFirst.id",
+               b.name         "attractionFirst.name",
+               b.introduction "attractionFirst.introduction",
+               c.id           "attractionSecond.id",
+               c.name         "attractionSecond.name",
+               c.introduction "attractionSecond.introduction"
+        from road a
+                 inner join attraction b on a.attraction_first_id = b.id
+                 inner join attraction c on a.attraction_second_id = c.id
+        where (attraction_first_id = #{firstId}
+           and attraction_second_id = #{secondId})
+        or (attraction_first_id = #{secondId}
+          and attraction_second_id= #{firstId})
+    </select>
+    <delete id="deleteRoadByAttractionId">
+        delete
+        from road
+        where (attraction_first_id = #{firstId} and attraction_second_id = #{secondId})
+           or (attraction_first_id = #{secondId} and attraction_second_id = #{firstId})
+    </delete>
+
+    <update id="updateRoad" parameterType="Road">
+        update road a
+        set distance=#{road.distance}
+        where (attraction_first_id = #{road.attractionFirstId} and attraction_second_id = #{road.attractionSecondId})
+           or (attraction_first_id = #{road.attractionSecondId} and attraction_second_id = #{road.attractionFirstId})
+    </update>
+
+    <delete id="deleteAll">
+        truncate table road
+    </delete>
+</mapper>
