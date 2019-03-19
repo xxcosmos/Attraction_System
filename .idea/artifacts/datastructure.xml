@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="datastructure">
+    <output-path>$PROJECT_DIR$/out/artifacts/datastructure</output-path>
+    <root id="root" />
+  </artifact>
+</component>
