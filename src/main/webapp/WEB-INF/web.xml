@@ -11,7 +11,7 @@
             <param-value>classpath:spring/spring-*.xml</param-value>
         </init-param>
         <multipart-config>
-            <location>/home/cosmos</location>
+            <location>/Users/xiaoyuu</location>
         </multipart-config>
     </servlet>
     <servlet-mapping>
